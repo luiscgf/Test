@@ -3,8 +3,13 @@ import processing.serial.*;
 int end = 10;   
 String serial;  
 Serial port; 
+Serial myPort;  
+char inByte;
+int b = 0;
 
 void setup() {
+
+  size(800, 600);
   port = new Serial(this, Serial.list()[1], 9600);
   port.clear();
   serial = port.readStringUntil(end);
@@ -14,10 +19,15 @@ void setup() {
 void draw() {
   while (port.available() > 0) {
     serial = port.readStringUntil(end);
-  }
-    if (serial != null) {  //if the string is not empty, print the following
-      String[] a = split(serial, ',');  //a new array (called 'a') that stores values into separate cells (separated by commas specified in your Arduino program)
-      println(a[0]); //print Value1 (in cell 1 of Array - remember that arrays are zero-indexed)
-    
+    if (b >= 10) {
+      myPort.clear();
+      myPort.stop();
     }
+
+
+    if (serial != null) { 
+      String[] a = split(serial, ','); 
+      println(a[0]);
+    }
+  }
 }
